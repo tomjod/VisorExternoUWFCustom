@@ -1,0 +1,6 @@
+.venv
+.mypy_cache
+
+src/gui/__pycache__/root_windows.cpython-313.pyc
+src/__pycache__/config.cpython-313.pyc
+src/__pycache__/simulator.cpython-313.pyc

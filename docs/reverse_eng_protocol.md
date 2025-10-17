@@ -16,15 +16,15 @@ POSICIÓN  | BYTES      | CAMPO                           | DESCRIPCIÓN
 ----------|------------|---------------------------------|-------------------------------------------
 1         | 02         | STX                             | Inicio de transmisión
 2-3       | 30 30      | UNKNOWN_1                       | Propósito desconocido (investigar)
-4         | 30/31      | STATUS                          | 0x31 = Activo, 0x30 = Standby
-5         | 31         | UNKNOWN_2                       | Siempre 0x31 (constante)
+4         | 30/31      | STATUS                          | 0x31 = Activo, 0x30 = Standby (tambien a cambiado a 34 y 35)
+5         | 31         | UNKNOWN_2                       | varia entre 0x30, 0x31 y 0x32
 6         | 30/31      | UNKNOWN_3                       | Variable (investigar condiciones)
 7         | 30/31      | RECHAZO_SENSOR                  | 0x31 = Activo, 0x30 = Inactivo
-8-21      | 28 bytes   | MONTO_CONTADO                   | Valor monetario (14 dígitos, der→izq)
-22-23     | 2 bytes    | UNKNOWN_4                       | Propósito desconocido (¿relacionado piezas?)
-24-27     | 4 bytes    | CONTADOR_PIEZAS                 | Cantidad de piezas contadas
-28        | 03         | ETX                             | Fin de transmisión
-29        | 3A (var)   | CHECKSUM                        | Verificación de integridad
+8-22      | 28 bytes   | MONTO_CONTADO                   | Valor monetario (14 dígitos, der→izq)
+23-24     | 2 bytes    | UNKNOWN_4                       | Propósito desconocido 
+25-28     | 4 bytes    | CONTADOR_PIEZAS                 | Cantidad de piezas contadas
+29        | 03         | ETX                             | Fin de transmisión
+30        | 3A (var)   | CHECKSUM                        | Verificación de integridad
 ```
 
 ## Desglose Detallado
@@ -38,24 +38,24 @@ POSICIÓN  | BYTES      | CAMPO                           | DESCRIPCIÓN
 - **RECHAZO_SENSOR (Pos 7):** Estado del sensor de rechazo/validación
 
 ### Datos (Posiciones 8-27)
-- **MONTO_CONTADO (Pos 8-21):** 
+- **MONTO_CONTADO (Pos 8-22):** 
   - 14 dígitos en formato ASCII
   - Llena de izquierda con ceros
   - Orden: **derecha a izquierda** (little-endian en representación decimal)
-  - Ejemplo: `3030303030303030363031303030` = 601.000 unidades
+  - Ejemplo: `3030303030303030363031303030` = 601000 
   
-- **UNKNOWN_4 (Pos 22-23):**
+- **UNKNOWN_4 (Pos 23-24):**
   - 2 bytes sin identificar
   - Posible relación con conteo de piezas o validaciones
   - Requiere más muestras para análisis
   
-- **CONTADOR_PIEZAS (Pos 24-27):**
+- **CONTADOR_PIEZAS (Pos 25-28):**
   - 4 dígitos ASCII
   - Confirmado: cuenta de piezas contadas
 
-### Cola (Posiciones 28-29)
-- **ETX (Pos 28):** Delimitador de fin
-- **CHECKSUM (Pos 29):** Valor variable (posible CRC o suma de verificación)
+### Cola (Posiciones 29-30)
+- **ETX (Pos 29):** Delimitador de fin
+- **CHECKSUM (Pos 30):** Valor variable (posible CRC o suma de verificación)
 
 ---
 
